@@ -3,11 +3,28 @@ just begin
 
 自定义View
 
+****构造函数****
+
 * 引入重写至少两个构造函数。简单super即可
 
   代码创建view时,多用view（this）;xml配置view时，实现使用View(context,atts)
+  * 自定义View的自定义属性
+  通常使用自定义View，为了使用方便，设置自定义属性可从中直接获取view的必要属性进行绘制
+  1)styles.xml 
 
-* 测量 说明整个view 大小  重写onMeasure
+         <declare-styleable name="ColorCircleView">自定义View名字
+        <attr name="circle_color" format="color"/> 属性名 属性类型-类型详情可看attrs例子
+        </declare-styleable>
+  2)在View(context,atts) 构造函数有atts中，可获取自定义属性：
+  
+      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ColorCircleView);//获取声明的styleable名称，都使用自定义view名
+      mColor = a.getColor(R.styleable.ColorCircleView_circle_color, getResources().getColor(R.color.colorPrimary));
+                          //自定义属性的某个属性名获取对应属性
+      a.recycle();
+      //!!!!回收资源
+
+****测量****
+* 说明整个view 大小  重写onMeasure
 
 根据view构造时传入的layout_width,layout_height,获取初始构造时的数据情况
 在测量模式的限制下，在范围内,自定义设定view的size
@@ -72,7 +89,8 @@ ps:
 构造View时，通过属性padding等设置，实现View绘画时，注意测量时把设置的padding等get数据加入测量；
 getSuggestedMinimumWidth()>0，当有对view setMinimumWidth;
 
-* 绘制 重写onDraw
+****绘制****
+* 重写onDraw
 
 屏幕坐标系，默认以左上角为原点，x轴往右为正，y轴往下为正。
 对于view.getTop(),getLeft()...都是以其父容器的左上角为原点得到的数据位置，注意别误会为其在整个屏幕的坐标
@@ -102,6 +120,14 @@ Paint.setAntiAlias(true)
 2、当前页面前后台切换，画笔对象保留沿用，会重新调用onDraw，若绘制前对部分属性没有重置会导致效果差异。因此注意对画笔的设置尽量统一
 
 3、当旋转屏幕时，view会从构造函数重新绘制
+
+
+****total ps****
+
+1、在View中初始化时，设置view的点击事件监听。若要改变view的ui，即可在事件内调用invalidate()，引发onDraw重绘
+
+2、在构造函数中，完成获取自定义属性值，初始画笔对象等基础
+
        
        
        
