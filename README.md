@@ -4,8 +4,9 @@ just begin
 自定义View
 测量 说明整个view 大小  onMeasure
 根据view构造时传入的layout_width,layout_height,获取初始构造时的数据情况
-在测量模式的限制下，在范围内,自定义设定view的size  --setMeasuredDimension
+在测量模式的限制下，在范围内,自定义设定view的size
 代码中，我们直接获取得到测量模式，和系统测量的初始数据，进行分情况取我们所需。
+最后setMeasuredDimension(width,heigth) 完成测量，记录数据
 
  int mode = MeasureSpec.getMode(measureSpec);
  int size = MeasureSpec.getSize(measureSpec);
